@@ -8,9 +8,9 @@
    (:name db)))
 
 (re-frame/reg-sub
- ::active-panel
+ ::active-page
  (fn [db _]
-   (:active-panel db)))
+   (:active-page db)))
 
 (re-frame/reg-sub
  ::re-pressed-example

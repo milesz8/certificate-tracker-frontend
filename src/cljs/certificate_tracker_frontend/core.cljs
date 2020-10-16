@@ -5,7 +5,7 @@
    [re-pressed.core :as rp]
    [certificate-tracker-frontend.events :as events]
    [certificate-tracker-frontend.routes :as routes]
-   [certificate-tracker-frontend.views :as views]
+   [certificate-tracker-frontend.views.base :as base]
    [certificate-tracker-frontend.config :as config]
    ))
 
@@ -18,11 +18,10 @@
   (re-frame/clear-subscription-cache!)
   (let [root-el (.getElementById js/document "app")]
     (rdom/unmount-component-at-node root-el)
-    (rdom/render [views/main-panel] root-el)))
+    (rdom/render [base/base-page] root-el)))
 
 (defn init []
   (routes/app-routes)
   (re-frame/dispatch-sync [::events/initialize-db])
-  (re-frame/dispatch-sync [::rp/add-keyboard-event-listener "keydown"])
   (dev-setup)
   (mount-root))
