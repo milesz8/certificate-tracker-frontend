@@ -13,6 +13,11 @@
    (:active-page db)))
 
 (re-frame/reg-sub
- ::re-pressed-example
+ ::errors
  (fn [db _]
-   (:re-pressed-example db)))
+   (:errors db)))
+
+(re-frame/reg-sub
+ ::loading
+ (fn [db _]
+   (:loading db)))
