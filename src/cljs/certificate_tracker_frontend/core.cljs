@@ -1,27 +1,20 @@
 (ns certificate-tracker-frontend.core
   (:require
-   [reagent.dom :as rdom]
+   [certificate-tracker-frontend.events]
+   [certificate-tracker-frontend.routes :as router]
+   [certificate-tracker-frontend.views.base :as views]
    [re-frame.core :as re-frame]
-   [re-pressed.core :as rp]
-   [certificate-tracker-frontend.events :as events]
-   [certificate-tracker-frontend.routes :as routes]
-   [certificate-tracker-frontend.views.base :as base]
-   [certificate-tracker-frontend.config :as config]
-   ))
-
-
-(defn dev-setup []
-  (when config/debug?
-    (println "dev mode")))
+   [reagent.dom :as rdom]))
 
 (defn ^:dev/after-load mount-root []
   (re-frame/clear-subscription-cache!)
   (let [root-el (.getElementById js/document "app")]
     (rdom/unmount-component-at-node root-el)
-    (rdom/render [base/base-page] root-el)))
+    (rdom/render [views/certificate-tracker-frontend] root-el)))
 
-(defn init []
-  (routes/app-routes)
-  (re-frame/dispatch-sync [::events/initialize-db])
-  (dev-setup)
-  (mount-root))
+(defn ^:export init
+  []
+  (router/start!)
+  (re-frame/dispatch-sync [:initialize-db])
+  (rdom/render [views/certificate-tracker-frontend]
+               (.getElementById js/document "app")))

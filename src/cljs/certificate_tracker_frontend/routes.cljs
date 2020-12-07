@@ -1,30 +1,25 @@
 (ns certificate-tracker-frontend.routes
-  (:require-macros [secretary.core :refer [defroute]])
-  (:import [goog History]
-           [goog.history EventType])
-  (:require
-   [secretary.core :as secretary]
-   [goog.events :as gevents]
-   [re-frame.core :as re-frame]
-   [re-pressed.core :as rp]
-   [certificate-tracker-frontend.events :as events]
-   ))
+  (:require [bidi.bidi :as bidi]
+            [pushy.core :as pushy]
+            [re-frame.core :as re-frame]))
 
-(defn hook-browser-navigation! []
-  (doto (History.)
-    (gevents/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token ^js event))))
-    (.setEnabled true)))
+(def routes
+  ["/" {"" :login
+        "login"        :login
+        "familes"      :familes}])
 
-(defn app-routes []
-  (secretary/set-config! :prefix "#")
-  ;; --------------------
-  ;; define routes here
-  (defroute "/" []
-    (re-frame/dispatch [::events/set-active-page :families-page]))
-  (defroute "/login" []
-    (re-frame/dispatch [::events/set-active-page :login-page]))
-  ;; --------------------
-  (hook-browser-navigation!))
+
+(def history
+  (let [dispatch #(re-frame/dispatch [:set-active-page {:page (:handler %)}])
+        match #(bidi/match-route routes %)]
+    (pushy/pushy dispatch match)))
+
+(defn start!
+  []
+  (pushy/start! history))
+
+(def url-for (partial bidi/path-for routes))
+
+(defn set-token!
+  [token]
+  (pushy/set-token! history token))

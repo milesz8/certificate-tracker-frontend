@@ -1,4 +1,4 @@
-(ns certificate-tracker-frontend.views.login
+(ns certificate-tracker-frontend.views.auth
   (:require
    [certificate-tracker-frontend.subs :as subs]
    [re-frame.core :as re-frame]
@@ -30,7 +30,7 @@
             errors @(re-frame/subscribe [:errors])
             login-user (fn [event credentials]
                          (.preventDefault event)
-                         (re-frame/dispatch [:login credentials]))]
+                         (re-frame/dispatch [::mock-login credentials]))]
         [:div.d-flex.justify-content-md-center.align-items-center
          [:div.card.col-6.login-card
           [:span.p-3]

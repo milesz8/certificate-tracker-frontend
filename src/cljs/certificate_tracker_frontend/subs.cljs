@@ -3,21 +3,21 @@
    [re-frame.core :as re-frame]))
 
 (re-frame/reg-sub
- ::name
+ :name
  (fn [db]
    (:name db)))
 
 (re-frame/reg-sub
- ::active-page
+ :active-page
  (fn [db _]
    (:active-page db)))
 
 (re-frame/reg-sub
- ::errors
+ :errors
  (fn [db _]
    (:errors db)))
 
 (re-frame/reg-sub
- ::loading
+ :loading
  (fn [db _]
    (:loading db)))

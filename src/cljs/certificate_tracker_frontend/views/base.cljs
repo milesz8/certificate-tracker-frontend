@@ -1,22 +1,29 @@
 (ns certificate-tracker-frontend.views.base
   (:require
-   [re-frame.core :as re-frame]
-   [re-com.core :as re-com]
-   [certificate-tracker-frontend.subs :as subs]
-   [certificate-tracker-frontend.views.login :as login]
-   [certificate-tracker-frontend.views.families :as families]))
+   [certificate-tracker-frontend.routes]
+   [certificate-tracker-frontend.subs]
+   [certificate-tracker-frontend.views.families :as families]
+   [certificate-tracker-frontend.views.auth :as auth]
+   [re-frame.core :as re-frame]))
 
-(defn- pages [page-name]
+(defn home []
+  [:div
+   "home"])
+
+(defn not-found
+  []
+  [:div.container
+   [:h1 "404"]
+   [:h3 "Mislabeled."]])
+
+(defn pages [page-name]
   (case page-name
-    :families-page [families/families-page]
-    :login-page [login/login-page]
-    [:div]))
+    :login            [auth/login-page]
+    :familes            [families/families-page]
+    [not-found]))
 
-(defn show-page [page-name]
-  [pages page-name])
-
-(defn base-page []
-  (let [active-page (re-frame/subscribe [::subs/active-page])]
-    [re-com/v-box
-     :height "100%"
-     :children [[pages @active-page]]]))
+(defn certificate-tracker-frontend
+  []
+  (let [active-page @(re-frame/subscribe [:active-page])]
+    [:div
+     [:div.content [pages active-page]]]))
