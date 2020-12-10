@@ -7,7 +7,7 @@
 
 (defn login-title []
   [re-com/title
-   :label "Hello, this is the login Page!"
+   :label "Hello, welcome to certificate tracker!"
    :level :level1])
 
 (defn link-to-families-page []
@@ -30,7 +30,7 @@
             errors @(re-frame/subscribe [:errors])
             login-user (fn [event credentials]
                          (.preventDefault event)
-                         (re-frame/dispatch [::mock-login credentials]))]
+                         (re-frame/dispatch [:login credentials]))]
         [:div.d-flex.justify-content-md-center.align-items-center
          [:div.card.col-6.login-card
           [:span.p-3]

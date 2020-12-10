@@ -1,7 +1,9 @@
 (ns certificate-tracker-frontend.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:name "re-frame"
+   :homes (list 
+           {:id 1 :last "mclenon" } {:id 2 :last "ator"} {:id 3 :last "huggins"})})
 
 (def user-key "current-user")
 

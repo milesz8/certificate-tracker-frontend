@@ -21,3 +21,8 @@
  :loading
  (fn [db _]
    (:loading db)))
+
+(re-frame/reg-sub
+ :homes
+ (fn [db _]
+   (:homes db)))

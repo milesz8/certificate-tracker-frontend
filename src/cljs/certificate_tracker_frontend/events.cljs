@@ -2,6 +2,7 @@
   (:require
    [re-frame.core :as re-frame]
    [certificate-tracker-frontend.db :as db]
+   [certificate-tracker-frontend.routes :as router]
    ))
 
 (defn initialize-db
@@ -12,13 +13,26 @@
   [db [_ {:keys [page]}]]
   (assoc db :active-page page))
 
-;; (defn mock-login
-;;   [{:keys [db]} [_ _]]
-;;   {:db         (assoc-in db [:loading :login] true)
-;;    :set-url {:url "/task"}})
+(defn checkUser
+  [credentials]
+  (= credentials
+     {:username "miles@gmail.com"
+      :password "password"}))
+
+(defn login
+  [{:keys [db]} [_ credentials]]
+  (if (checkUser credentials) 
+  {:set-url {:url "/familes"}}))
+
+
 
 (def log (.-log js/console))
 
+(defn set-url
+  [{:keys [url]}]
+  (router/set-token! url))
+
 (re-frame/reg-event-db :initialize-db initialize-db)
 (re-frame/reg-event-db :set-active-page set-active-page)
-;; (re-frame/reg-event-fx ::mock-login mock-login)
+(re-frame/reg-fx :set-url set-url)
+(re-frame/reg-event-fx :login login)
